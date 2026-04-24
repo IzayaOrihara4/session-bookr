@@ -2,6 +2,7 @@ import * as Sentry from "@sentry/react";
 import { createRoot } from "react-dom/client";
 import App from "./App.tsx";
 import "./index.css";
+import { AuthProvider } from "./context/AuthContext";
 
 Sentry.init({
   dsn: import.meta.env.VITE_SENTRY_DSN || "https://examplePublicKey@o0.ingest.sentry.io/0",
@@ -37,7 +38,9 @@ createRoot(document.getElementById("root")!).render(
     } 
     showDialog
   >
-    <App />
+    <AuthProvider>
+      <App />
+    </AuthProvider>
   </Sentry.ErrorBoundary>
 );
 

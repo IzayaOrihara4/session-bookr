@@ -6,6 +6,12 @@ import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import Index from "./pages/Index.tsx";
 import NotFound from "./pages/NotFound.tsx";
+import Login from "./pages/auth/Login";
+import Signup from "./pages/auth/Signup";
+import AdminDashboard from "./pages/dashboard/AdminDashboard";
+import UserDashboard from "./pages/dashboard/UserDashboard";
+import ProtectedRoute from "./components/ProtectedRoute";
+import Unauthorized from "./pages/auth/Unauthorized";
 
 const queryClient = new QueryClient();
 
@@ -17,6 +23,21 @@ const App = () => (
       <HashRouter>
         <Routes>
           <Route path="/" element={<Index />} />
+          
+          {/* Auth Routes */}
+          <Route path="/auth/login" element={<Login />} />
+          <Route path="/auth/signup" element={<Signup />} />
+          <Route path="/unauthorized" element={<Unauthorized />} />
+          
+          {/* Protected Routes */}
+          <Route element={<ProtectedRoute allowedRoles={['user', 'client', 'admin']} />}>
+            <Route path="/dashboard" element={<UserDashboard />} />
+          </Route>
+          
+          <Route element={<ProtectedRoute allowedRoles={['admin']} />}>
+            <Route path="/admin" element={<AdminDashboard />} />
+          </Route>
+
           <Route path="*" element={<NotFound />} />
         </Routes>
       </HashRouter>

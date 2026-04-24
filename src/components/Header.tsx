@@ -1,10 +1,14 @@
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
-import { Menu, X } from "lucide-react";
+import { Menu, X, LogOut, User as UserIcon } from "lucide-react";
 import { useBookingDemo } from "@/context/BookingContext";
+import { useAuth } from "@/context/AuthContext";
+import { useNavigate } from "react-router-dom";
 
 const Header = () => {
   const { openBookingDemo } = useBookingDemo();
+  const { profile, signOut } = useAuth();
+  const navigate = useNavigate();
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [activeSection, setActiveSection] = useState<string | null>(null);
@@ -102,13 +106,41 @@ const Header = () => {
                 </button>
               );
             })}
-            <Button
-              size="sm"
-              onClick={handleBook}
-              className="bg-primary hover:bg-primary/90 text-primary-foreground rounded-full px-6 h-10 text-sm font-semibold transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] shadow-md shadow-primary/20 hover:shadow-primary/30"
-            >
-              Book Free Consult
-            </Button>
+            <div className="flex items-center gap-4">
+              {profile ? (
+                <>
+                  <button
+                    onClick={() => navigate(profile.role === 'admin' ? '/admin' : '/dashboard')}
+                    className="text-[11px] tracking-widest uppercase font-bold text-espresso/70 hover:text-primary transition-all duration-300 flex items-center gap-2"
+                  >
+                    <UserIcon className="w-3 h-3" />
+                    Dashboard
+                  </button>
+                  <button
+                    onClick={() => signOut(navigate)}
+                    className="text-[11px] tracking-widest uppercase font-bold text-espresso/70 hover:text-muted-rose transition-all duration-300 flex items-center gap-2"
+                  >
+                    <LogOut className="w-3 h-3" />
+                    Sign Out
+                  </button>
+                </>
+              ) : (
+                <button
+                  onClick={() => navigate('/auth/login')}
+                  className="text-[11px] tracking-widest uppercase font-bold text-espresso/70 hover:text-primary transition-all duration-300"
+                  aria-label="Member login"
+                >
+                  Login
+                </button>
+              )}
+              <Button
+                size="sm"
+                onClick={handleBook}
+                className="bg-primary hover:bg-primary/90 text-primary-foreground rounded-full px-6 h-10 text-sm font-semibold transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] shadow-md shadow-primary/20 hover:shadow-primary/30"
+              >
+                Book Free Consult
+              </Button>
+            </div>
           </nav>
 
           {/* Mobile toggle */}
@@ -157,6 +189,38 @@ const Header = () => {
                   </button>
                 );
               })}
+              {profile ? (
+                <>
+                  <button
+                    onClick={() => {
+                      setMobileOpen(false);
+                      navigate(profile.role === 'admin' ? '/admin' : '/dashboard');
+                    }}
+                    className="text-sm py-2 tracking-widest uppercase text-left font-medium text-foreground hover:text-primary pl-2 border-b border-border/50"
+                  >
+                    Dashboard
+                  </button>
+                  <button
+                    onClick={() => {
+                      setMobileOpen(false);
+                      signOut(navigate);
+                    }}
+                    className="text-sm py-2 tracking-widest uppercase text-left font-medium text-foreground hover:text-muted-rose pl-2 border-b border-border/50"
+                  >
+                    Sign Out
+                  </button>
+                </>
+              ) : (
+                <button
+                  onClick={() => {
+                    setMobileOpen(false);
+                    navigate('/auth/login');
+                  }}
+                  className="text-sm py-2 tracking-widest uppercase text-left font-medium text-foreground hover:text-primary pl-2 border-b border-border/50"
+                >
+                  Login
+                </button>
+              )}
             </nav>
           </div>
         </div>

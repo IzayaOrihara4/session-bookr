@@ -1,62 +1,61 @@
-# Implementation Plan: Supabase & Dashboard Core [PHASE 1]
+# Implementation Plan: Supabase & Dashboard Core [PHASE 1] - REVISED
 
-This plan covers the foundational setup for the Supabase backend and the architectural dashboard system for `session-bookr`.
+This plan covers the foundational setup for the Supabase backend and the authentication system for `session-bookr`, prioritized by database schema and role-based access.
 
 ## 1. Objectives
 - Establish a secure, role-based backend using Supabase.
 - Implement a premium, high-performance UI for Admin and Client dashboards.
 - Align with the "Modern Clinical Luxury" aesthetic.
+- Verify role-based navigation and authentication flow.
 
 ## 2. Technical Stack
 - **Backend**: Supabase (Auth, PostgreSQL, RLS, Edge Functions).
 - **Frontend**: React (Vite), Tailwind CSS, Shadcn UI, Sonner (toasts).
-- **Routing**: `react-router-dom` (nested dashboard routes).
+- **Routing**: `react-router-dom` (nested dashboard routes and protected routes).
 
 ## 3. Detailed Task Breakdown
 
-### Milestone 1: Supabase & Auth Foundation
+### Milestone 1: Database Schema & RLS (Backend First)
 - [ ] **Infrastructure**:
     - Link project to Supabase.
     - Add `.env.local` keys (URL, Anon Key).
-- [ ] **Authentication**:
-    - Configure Google & Email providers in Supabase.
-    - Create `AuthProvider` and `useAuth` hook.
-    - Implement `/auth/login` and `/auth/signup` pages.
-
-### Milestone 2: Schema & RLS
 - [ ] **Core Tables**:
-    - `profiles`: Manage roles (`user`, `client`, `admin`) and status.
+    - `profiles`: Manage `id`, `email`, `role` (`user`, `client`, `admin`), and `status`.
     - `locations`: Studios management.
     - `categories` & `treatment_types`: Services list.
 - [ ] **RLS Policies**:
     - Users can only read/write their own `profiles`.
     - Admins have full access to all tables.
-    - Clients can read their own `bookings`.
-- [ ] **Edge Functions (Optional for Phase 1)**:
-    - Auto-upgrade `user` to `client` on first booking.
+    - Setup trigger to create `profile` on auth signup.
 
-### Milestone 3: Dashboard Architecture
-- [ ] **Layout System**:
-    - `SidebarLayout`: Architectural collapsible sidebar.
-    - `TopNav`: Breadcrumbs and user profile menu.
-- [ ] **Admin Dashboard UI**:
-    - `Overview`: Key metrics cards (using Shadcn).
-    - `Bookings`: Filterable data table.
-- [ ] **Client Dashboard UI**:
-    - `Overview`: Next session countdown card.
-    - `History`: Booking list.
+### Milestone 2: Authentication Implementation
+- [ ] **Auth Context**:
+    - Create `AuthProvider` and `useAuth` hook powered by Supabase Auth.
+- [ ] **UI Implementation**:
+    - Implement `/auth/login` and `/auth/signup` pages following the "Modern Clinical Luxury" aesthetic.
+    - Add validation and error handling with Sonner toasts.
+
+### Milestone 3: Role-Based Access & Mock Dashboards
+- [ ] **Protected Routing**:
+    - Implement `ProtectedRoute` component that checks for session and role.
+- [ ] **Mock Dashboards**:
+    - `MockAdminDashboard`: A simplified view for `/admin/dashboard` to verify admin access.
+    - `MockUserDashboard`: A simplified view for `/client/dashboard` to verify client/user access.
+- [ ] **Verification**:
+    - Manually promote a user to `admin` in Supabase dashboard.
+    - Test signup flow -> automatic `user` role.
+    - Test login -> redirect based on role.
 
 ## 4. UI/UX Refinements
 - **Palette**: Warm Ivory background, Muted Rose accent, Espresso text.
 - **Glassmorphism**: Use `bg-white/10 backdrop-blur-md` for panels.
-- **Animations**: Framer Motion for sidebar transitions and content fade-ins.
-- **Toasts**: Sonner configured to `top-left`.
+- **Animations**: Framer Motion for content fade-ins and state transitions.
 
 ## 5. Verification Plan
 - [ ] **Auth Check**: Successful login/logout and session persistence.
-- [ ] **Role RLS**: Attempting to access `/admin` as a `user` should redirect to `/client/dashboard` or 403.
-- [ ] **Data Fetching**: Verify `treatment_types` load from Supabase into the admin list.
+- [ ] **Role RLS**: Attempting to access `/admin` as a `user` should redirect or show 403.
+- [ ] **Data Integrity**: Verify that signup creates a corresponding entry in the `profiles` table.
 
 ---
 **Branch**: `feat/dashboard-supabase-integration`
-**GitHub Issue**: #3
+**GitHub Issue**: #1
