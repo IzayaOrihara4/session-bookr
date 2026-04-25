@@ -10,6 +10,7 @@ import Login from "./pages/auth/Login";
 import Signup from "./pages/auth/Signup";
 import AdminDashboard from "./pages/dashboard/AdminDashboard";
 import UserDashboard from "./pages/dashboard/UserDashboard";
+import Profile from "./pages/dashboard/Profile";
 import ProtectedRoute from "./components/ProtectedRoute";
 import Unauthorized from "./pages/auth/Unauthorized";
 
@@ -32,6 +33,7 @@ const App = () => (
           {/* Protected Routes */}
           <Route element={<ProtectedRoute allowedRoles={['user', 'client', 'admin']} />}>
             <Route path="/dashboard" element={<UserDashboard />} />
+            <Route path="/dashboard/profile" element={<Profile />} />
           </Route>
           
           <Route element={<ProtectedRoute allowedRoles={['admin']} />}>

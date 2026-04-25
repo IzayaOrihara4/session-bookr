@@ -1,9 +1,18 @@
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
-import { Menu, X, LogOut, User as UserIcon } from "lucide-react";
+import { Menu, X, LogOut, User as UserIcon, LayoutDashboard } from "lucide-react";
 import { useBookingDemo } from "@/context/BookingContext";
 import { useAuth } from "@/context/AuthContext";
 import { useNavigate } from "react-router-dom";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 const Header = () => {
   const { openBookingDemo } = useBookingDemo();
@@ -108,22 +117,53 @@ const Header = () => {
             })}
             <div className="flex items-center gap-4">
               {profile ? (
-                <>
-                  <button
-                    onClick={() => navigate(profile.role === 'admin' ? '/admin' : '/dashboard')}
-                    className="text-[11px] tracking-widest uppercase font-bold text-espresso/70 hover:text-primary transition-all duration-300 flex items-center gap-2"
-                  >
-                    <UserIcon className="w-3 h-3" />
-                    Dashboard
-                  </button>
-                  <button
-                    onClick={() => signOut(navigate)}
-                    className="text-[11px] tracking-widest uppercase font-bold text-espresso/70 hover:text-muted-rose transition-all duration-300 flex items-center gap-2"
-                  >
-                    <LogOut className="w-3 h-3" />
-                    Sign Out
-                  </button>
-                </>
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <button className="flex items-center gap-2 outline-none group">
+                      <div className="flex flex-col items-end mr-1 hidden lg:flex">
+                        <span className="text-[10px] font-bold text-espresso/80 leading-none">
+                          {profile.full_name || 'My Account'}
+                        </span>
+                        <span className="text-[9px] text-espresso/40 uppercase tracking-widest leading-none mt-1">
+                          {profile.role}
+                        </span>
+                      </div>
+                      <Avatar className="w-9 h-9 border border-primary/20 transition-all duration-300 group-hover:border-primary/50 group-hover:scale-105 shadow-sm">
+                        <AvatarImage src={profile.avatar_url || ''} alt={profile.full_name || 'User'} />
+                        <AvatarFallback className="bg-primary/5 text-primary text-[11px] font-bold">
+                          {profile.full_name?.[0] || profile.email?.[0]?.toUpperCase() || 'U'}
+                        </AvatarFallback>
+                      </Avatar>
+                    </button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent align="end" className="w-56 mt-2 bg-background/95 backdrop-blur-xl border-primary/10 shadow-xl rounded-2xl p-2 animate-in fade-in zoom-in-95 duration-200">
+                    <DropdownMenuLabel className="px-3 py-2 text-[10px] uppercase tracking-[0.2em] text-espresso/40 font-bold">
+                      Account
+                    </DropdownMenuLabel>
+                    <DropdownMenuItem 
+                      onClick={() => navigate('/dashboard/profile')}
+                      className="flex items-center gap-2 px-3 py-2.5 text-xs font-medium text-espresso/70 hover:text-primary hover:bg-primary/5 rounded-xl transition-colors cursor-pointer"
+                    >
+                      <UserIcon className="w-3.5 h-3.5" />
+                      Profile
+                    </DropdownMenuItem>
+                    <DropdownMenuItem 
+                      onClick={() => navigate(profile.role === 'admin' ? '/admin' : '/dashboard')}
+                      className="flex items-center gap-2 px-3 py-2.5 text-xs font-medium text-espresso/70 hover:text-primary hover:bg-primary/5 rounded-xl transition-colors cursor-pointer"
+                    >
+                      <LayoutDashboard className="w-3.5 h-3.5" />
+                      {profile.role === 'admin' ? 'Admin' : 'Dashboard'}
+                    </DropdownMenuItem>
+                    <DropdownMenuSeparator className="my-1 bg-primary/5" />
+                    <DropdownMenuItem 
+                      onClick={() => signOut(navigate)}
+                      className="flex items-center gap-2 px-3 py-2.5 text-xs font-medium text-muted-rose hover:bg-muted-rose/5 rounded-xl transition-colors cursor-pointer"
+                    >
+                      <LogOut className="w-3.5 h-3.5" />
+                      Log Out
+                    </DropdownMenuItem>
+                  </DropdownMenuContent>
+                </DropdownMenu>
               ) : (
                 <button
                   onClick={() => navigate('/auth/login')}
@@ -194,19 +234,31 @@ const Header = () => {
                   <button
                     onClick={() => {
                       setMobileOpen(false);
+                      navigate('/dashboard/profile');
+                    }}
+                    className="text-sm py-3 tracking-widest uppercase text-left font-medium text-foreground hover:text-primary pl-2 border-b border-border/50 flex items-center gap-3"
+                  >
+                    <UserIcon className="w-4 h-4 text-primary/60" />
+                    Profile
+                  </button>
+                  <button
+                    onClick={() => {
+                      setMobileOpen(false);
                       navigate(profile.role === 'admin' ? '/admin' : '/dashboard');
                     }}
-                    className="text-sm py-2 tracking-widest uppercase text-left font-medium text-foreground hover:text-primary pl-2 border-b border-border/50"
+                    className="text-sm py-3 tracking-widest uppercase text-left font-medium text-foreground hover:text-primary pl-2 border-b border-border/50 flex items-center gap-3"
                   >
-                    Dashboard
+                    <LayoutDashboard className="w-4 h-4 text-primary/60" />
+                    {profile.role === 'admin' ? 'Admin' : 'Dashboard'}
                   </button>
                   <button
                     onClick={() => {
                       setMobileOpen(false);
                       signOut(navigate);
                     }}
-                    className="text-sm py-2 tracking-widest uppercase text-left font-medium text-foreground hover:text-muted-rose pl-2 border-b border-border/50"
+                    className="text-sm py-3 tracking-widest uppercase text-left font-medium text-muted-rose pl-2 border-b border-border/50 flex items-center gap-3"
                   >
+                    <LogOut className="w-4 h-4" />
                     Sign Out
                   </button>
                 </>

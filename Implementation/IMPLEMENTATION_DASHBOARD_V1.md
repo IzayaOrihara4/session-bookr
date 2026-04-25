@@ -46,6 +46,34 @@ This plan covers the foundational setup for the Supabase backend and the authent
     - Test signup flow -> automatic `user` role.
     - Test login -> redirect based on role.
 
+### Milestone 4: User Profiles & Navigation Refinement
+- [x] **Profile Page**:
+    - Create a dedicated `/dashboard/profile` page.
+    - Display user name, email, role, and avatar.
+    - Match "Modern Clinical Luxury" aesthetic (Glassmorphism, Espresso & Ivory palette).
+- [x] **Navigation Header**:
+    - Replace the "Dashboard" text button with a Profile Avatar dropdown.
+    - Trigger: Show profile image or initials placeholder.
+    - Options: "Profile" (to /dashboard/profile) and "Log Out".
+    - Role-aware: Redirect to /admin or /dashboard based on role.
+- [x] **Mobile Experience**:
+    - Update side menu to include "Profile" and consistent iconography.
+- [x] **Role-Based Navigation**:
+    - Admin users now see an "Admin" link in the header dropdown (routes to `/admin`).
+    - Standard users still see a "Dashboard" link in the header dropdown (routes to `/dashboard`).
+    - Preset logout behavior maintained across all roles.
+
+### Milestone 5: Profile Avatars & Schema Extensions
+- [x] **Schema Update**:
+    - Added `avatar_url` column to `public.profiles` table.
+- [x] **Storage Configuration**:
+    - Created `avatars` storage bucket.
+    - Implemented RLS for Storage: Users manage their own; Admins view all.
+- [x] **Avatar Implementation**:
+    - Added image upload with camera trigger on `/dashboard/profile`.
+    - Implemented branded placeholder system for missing images.
+    - Added `is_admin()` SQL helper for cross-service role checks.
+
 ## 4. UI/UX Refinements
 - **Palette**: Warm Ivory background, Muted Rose accent, Espresso text.
 - **Glassmorphism**: Use `bg-white/10 backdrop-blur-md` for panels.

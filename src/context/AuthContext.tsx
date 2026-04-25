@@ -11,6 +11,8 @@ interface Profile {
   full_name: string | null;
   role: UserRole;
   status: string;
+  avatar_url?: string | null;
+  created_at?: string;
 }
 
 interface AuthContextType {
