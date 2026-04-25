@@ -85,5 +85,5 @@ This plan covers the foundational setup for the Supabase backend and the authent
 - [ ] **Data Integrity**: Verify that signup creates a corresponding entry in the `profiles` table.
 
 ---
-**Branch**: `feat/dashboard-supabase-integration`
+**Branch**: `main`
 **GitHub Issue**: #1
