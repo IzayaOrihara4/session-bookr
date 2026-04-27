@@ -66,6 +66,7 @@ This plan covers the foundational setup for the Supabase backend and the authent
 ### Milestone 5: Profile Avatars & Schema Extensions
 - [x] **Schema Update**:
     - Added `avatar_url` column to `public.profiles` table.
+    - Expanded `public.profiles` with `phone`, `date_of_birth`, and full address fields.
 - [x] **Storage Configuration**:
     - Created `avatars` storage bucket.
     - Implemented RLS for Storage: Users manage their own; Admins view all.
@@ -73,6 +74,10 @@ This plan covers the foundational setup for the Supabase backend and the authent
     - Added image upload with camera trigger on `/dashboard/profile`.
     - Implemented branded placeholder system for missing images.
     - Added `is_admin()` SQL helper for cross-service role checks.
+- [x] **Profile Management UI Expansion**:
+    - Updated `/dashboard/profile` to include editable contact and address fields.
+    - Maintained luxury clinical aesthetic with Mauve accents and Serif headings.
+    - Email field locked for security.
 
 ## 4. UI/UX Refinements
 - **Palette**: Warm Ivory background, Muted Rose accent, Espresso text.
