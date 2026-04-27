@@ -1,4 +1,4 @@
-# Implementation Plan: Supabase & Dashboard Core [PHASE 1] - REVISED
+# Implementation Plan: Supabase & Dashboard Core [PHASE 1] - COMPLETED
 
 This plan covers the foundational setup for the Supabase backend and the authentication system for `session-bookr`, prioritized by database schema and role-based access.
 
@@ -16,32 +16,32 @@ This plan covers the foundational setup for the Supabase backend and the authent
 ## 3. Detailed Task Breakdown
 
 ### Milestone 1: Database Schema & RLS (Backend First)
-- [ ] **Infrastructure**:
+- [x] **Infrastructure**:
     - Link project to Supabase.
     - Add `.env.local` keys (URL, Anon Key).
-- [ ] **Core Tables**:
+- [x] **Core Tables**:
     - `profiles`: Manage `id`, `email`, `role` (`user`, `client`, `admin`), and `status`.
     - `locations`: Studios management.
     - `categories` & `treatment_types`: Services list.
-- [ ] **RLS Policies**:
+- [x] **RLS Policies**:
     - Users can only read/write their own `profiles`.
     - Admins have full access to all tables.
     - Setup trigger to create `profile` on auth signup.
 
 ### Milestone 2: Authentication Implementation
-- [ ] **Auth Context**:
+- [x] **Auth Context**:
     - Create `AuthProvider` and `useAuth` hook powered by Supabase Auth.
-- [ ] **UI Implementation**:
+- [x] **UI Implementation**:
     - Implement `/auth/login` and `/auth/signup` pages following the "Modern Clinical Luxury" aesthetic.
     - Add validation and error handling with Sonner toasts.
 
 ### Milestone 3: Role-Based Access & Mock Dashboards
-- [ ] **Protected Routing**:
+- [x] **Protected Routing**:
     - Implement `ProtectedRoute` component that checks for session and role.
-- [ ] **Mock Dashboards**:
+- [x] **Mock Dashboards**:
     - `MockAdminDashboard`: A simplified view for `/admin/dashboard` to verify admin access.
     - `MockUserDashboard`: A simplified view for `/client/dashboard` to verify client/user access.
-- [ ] **Verification**:
+- [x] **Verification**:
     - Manually promote a user to `admin` in Supabase dashboard.
     - Test signup flow -> automatic `user` role.
     - Test login -> redirect based on role.
@@ -85,10 +85,11 @@ This plan covers the foundational setup for the Supabase backend and the authent
 - **Animations**: Framer Motion for content fade-ins and state transitions.
 
 ## 5. Verification Plan
-- [ ] **Auth Check**: Successful login/logout and session persistence.
-- [ ] **Role RLS**: Attempting to access `/admin` as a `user` should redirect or show 403.
-- [ ] **Data Integrity**: Verify that signup creates a corresponding entry in the `profiles` table.
+- [x] **Auth Check**: Successful login/logout and session persistence.
+- [x] **Role RLS**: Attempting to access `/admin` as a `user` should redirect or show 403.
+- [x] **Data Integrity**: Verify that signup creates a corresponding entry in the `profiles` table.
 
 ---
-**Branch**: `main`
-**GitHub Issue**: #1
+**Status**: PHASE 1 COMPLETED
+**Branch**: `feat/expanded-profile-fields`
+**GitHub Issue**: #2
